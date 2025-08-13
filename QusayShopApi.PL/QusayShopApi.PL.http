@@ -1,0 +1,6 @@
+@QusayShopApi.PL_HostAddress = http://localhost:5084
+
+GET {{QusayShopApi.PL_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
