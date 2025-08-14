@@ -5,6 +5,10 @@ VisualStudioVersion = 17.14.36408.4 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QusayShopApi.PL", "QusayShopApi.PL\QusayShopApi.PL.csproj", "{3297FBE4-E575-4497-8D5A-6859D5BC3CBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QusayShopApi.DAL", "QusayShopApi.DAL\QusayShopApi.DAL.csproj", "{03DB9484-E104-44F9-90EC-2D9AD492E547}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QusayShopApi.BLL", "QusayShopApi.BLL\QusayShopApi.BLL.csproj", "{EF72C25B-3F6A-4BAD-B8AF-6186D935E6B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{3297FBE4-E575-4497-8D5A-6859D5BC3CBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3297FBE4-E575-4497-8D5A-6859D5BC3CBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3297FBE4-E575-4497-8D5A-6859D5BC3CBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03DB9484-E104-44F9-90EC-2D9AD492E547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03DB9484-E104-44F9-90EC-2D9AD492E547}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03DB9484-E104-44F9-90EC-2D9AD492E547}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03DB9484-E104-44F9-90EC-2D9AD492E547}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF72C25B-3F6A-4BAD-B8AF-6186D935E6B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF72C25B-3F6A-4BAD-B8AF-6186D935E6B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF72C25B-3F6A-4BAD-B8AF-6186D935E6B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF72C25B-3F6A-4BAD-B8AF-6186D935E6B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
