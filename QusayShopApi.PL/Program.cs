@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using QusayShopApi.BLL.Services;
+using QusayShopApi.BLL.Services.Classes;
+using QusayShopApi.BLL.Services.Interfaces;
 using QusayShopApi.DAL.Data;
-using QusayShopApi.DAL.Repositories;
+using QusayShopApi.DAL.Repositories.Classes;
+using QusayShopApi.DAL.Repositories.Interfaces;
 using Scalar;
 using Scalar.AspNetCore;
 namespace QusayShopApi.PL
@@ -20,7 +22,10 @@ namespace QusayShopApi.PL
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefultConnection"))) ;
             builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
+            builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+
             builder.Services.AddScoped<ICategoryServices,CategoryServices>();
+            builder.Services.AddScoped<IBrandServices, BrandServices>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
