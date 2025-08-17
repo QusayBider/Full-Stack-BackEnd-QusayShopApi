@@ -4,6 +4,7 @@ using QusayShopApi.BLL.Services.Interfaces;
 using QusayShopApi.DAL.Data;
 using QusayShopApi.DAL.Repositories.Classes;
 using QusayShopApi.DAL.Repositories.Interfaces;
+using QusayShopApi.DAL.Utils;
 using Scalar;
 using Scalar.AspNetCore;
 namespace QusayShopApi.PL
@@ -26,6 +27,7 @@ namespace QusayShopApi.PL
 
             builder.Services.AddScoped<ICategoryServices,CategoryServices>();
             builder.Services.AddScoped<IBrandServices, BrandServices>();
+            builder.Services.AddScoped<ISeedData, SeedData>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -34,6 +36,11 @@ namespace QusayShopApi.PL
                 app.MapOpenApi();
                 app.MapScalarApiReference();
             }
+
+            var scope = app.Services.CreateScope();
+            var ObjectOfseedData= scope.ServiceProvider.GetRequiredService<ISeedData>();
+            ObjectOfseedData.DataSeeding();
+
 
             app.UseHttpsRedirection();
 
