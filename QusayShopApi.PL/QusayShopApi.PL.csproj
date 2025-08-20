@@ -20,4 +20,9 @@
     <ProjectReference Include="..\QusayShopApi.DAL\QusayShopApi.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\" />
+    <Folder Include="Areas\Customer\" />
+  </ItemGroup>
+
 </Project>

@@ -8,7 +8,7 @@ namespace QusayShopApi.DAL.Utils
 {
     public interface ISeedData
     {
-        public void DataSeeding();
-        public void IdentityRoleSeeding();
+        public Task DataSeedingAsync();
+        public Task IdentityRoleSeedingAsync();
     }
 }

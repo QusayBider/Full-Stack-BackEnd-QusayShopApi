@@ -1,17 +1,20 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using QusayShopApi.BLL.Services.Classes;
 using QusayShopApi.BLL.Services.Interfaces;
 using QusayShopApi.DAL.Data;
+using QusayShopApi.DAL.Models;
 using QusayShopApi.DAL.Repositories.Classes;
 using QusayShopApi.DAL.Repositories.Interfaces;
 using QusayShopApi.DAL.Utils;
 using Scalar;
 using Scalar.AspNetCore;
+using System.Threading.Tasks;
 namespace QusayShopApi.PL
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +31,11 @@ namespace QusayShopApi.PL
             builder.Services.AddScoped<ICategoryServices,CategoryServices>();
             builder.Services.AddScoped<IBrandServices, BrandServices>();
             builder.Services.AddScoped<ISeedData, SeedData>();
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+                
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -39,8 +47,8 @@ namespace QusayShopApi.PL
 
             var scope = app.Services.CreateScope();
             var ObjectOfseedData= scope.ServiceProvider.GetRequiredService<ISeedData>();
-            ObjectOfseedData.DataSeeding();
-
+            await ObjectOfseedData.DataSeedingAsync();
+            await ObjectOfseedData.IdentityRoleSeedingAsync();
 
             app.UseHttpsRedirection();
 
