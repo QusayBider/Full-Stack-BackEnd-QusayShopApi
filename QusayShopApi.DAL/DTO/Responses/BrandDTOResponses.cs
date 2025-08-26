@@ -12,6 +12,6 @@ namespace QusayShopApi.DAL.DTO.Responses
         public string Name { get; set; }
         public DateTime Create_at { get; set; } = DateTime.Now;
         public DateTime Update_at { get; set; }
-        public string Status { get; set; } = "In_Active"; 
+        public string Status { get; set; } 
     }
 }

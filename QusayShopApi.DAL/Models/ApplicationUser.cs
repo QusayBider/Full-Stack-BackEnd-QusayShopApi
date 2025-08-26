@@ -13,6 +13,8 @@ namespace QusayShopApi.DAL.Models
         public string FullName { get; set; }
         public string? City { get; set; }
         public string? Street { get; set; }
+        public string? PasswordResetCode { get; set; }
+        public DateTime? PasswordResetCodeExpiredDate { get; set; }
 
     }
 }

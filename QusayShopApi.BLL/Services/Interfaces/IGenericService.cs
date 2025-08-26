@@ -11,7 +11,7 @@ namespace QusayShopApi.BLL.Services.Interfaces
     public interface IGenericService<TRequest,TResponse,TEntity>
     {
         int Create(TRequest request);
-        IEnumerable<TResponse> GetAll();
+        IEnumerable<TResponse> GetAll(bool brands_Active=false);
         int Delete(int id);
         int Update(int id, TRequest request);
         bool ToggleStatus(int id);

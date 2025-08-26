@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QusayShopApi.BLL.Services.Interfaces;
 using QusayShopApi.DAL.DTO.Requests;
@@ -7,6 +8,7 @@ namespace QusayShopApi.PL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles ="Customer")]
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryServices _categoryService;

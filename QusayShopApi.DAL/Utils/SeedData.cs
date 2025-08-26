@@ -62,21 +62,26 @@ namespace QusayShopApi.DAL.Utils
                     Email = "QusayBider@gmail.com",
                     UserName = "QBdier",
                     FullName = "Qusay Bider",
-                    PhoneNumber = "1234567890"
+                    PhoneNumber = "1234567890",
+                    EmailConfirmed=true
                 };
                 var user2 = new ApplicationUser()
                 {
                     Email = "AhmadBider@gmail.com",
                     UserName = "AhBdier",
                     FullName = "Ahmad Bider",
-                    PhoneNumber = "1234567890"
+                    PhoneNumber = "1234567890",
+                    EmailConfirmed = true
+
                 };
                 var user3 = new ApplicationUser()
                 {
                     Email = "AliBider@gmail.com",
                     UserName = "ABdier",
                     FullName = "Ali Bider",
-                    PhoneNumber = "1234567890"
+                    PhoneNumber = "1234567890",
+                    EmailConfirmed = true
+
                 };
                 await _userManager.CreateAsync(user1, "Qusay@1234");
                 await _userManager.CreateAsync(user2, "Ahmad@1234");    

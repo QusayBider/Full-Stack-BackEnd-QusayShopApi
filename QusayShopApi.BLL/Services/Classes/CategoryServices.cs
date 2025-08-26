@@ -19,8 +19,7 @@ namespace QusayShopApi.BLL.Services.Classes
     public class CategoryServices : GenericService<CategoryDTORequest, CategoryDTOResponses, Category>, ICategoryServices
     {
        
-        public CategoryServices(ICategoryRepository GenericRepository) : base(GenericRepository)
-        {
+        public CategoryServices(ICategoryRepository Repository) : base(Repository)   {
         }
 
     }

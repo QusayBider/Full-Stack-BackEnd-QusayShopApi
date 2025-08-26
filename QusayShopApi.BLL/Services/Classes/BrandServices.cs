@@ -17,7 +17,7 @@ namespace QusayShopApi.BLL.Services.Classes
 {
     public class BrandServices : GenericService<BrandDTORequest, BrandDTOResponses, Brand>, IBrandServices
     {
-        public BrandServices(IBrandRepository GenericRepository) : base(GenericRepository)
+        public BrandServices(IBrandRepository Repository) : base(Repository)
         {
         }
     }

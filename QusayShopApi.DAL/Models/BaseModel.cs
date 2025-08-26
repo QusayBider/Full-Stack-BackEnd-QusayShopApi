@@ -17,6 +17,6 @@ namespace QusayShopApi.DAL.Models
         public DateTime Create_at { get; set; } = DateTime.Now;
         public DateTime Update_at { get; set; }
 
-        public Status status { get; set; } = Status.In_Active;
+        public Status Status { get; set; } = Status.In_Active;
     }
 }

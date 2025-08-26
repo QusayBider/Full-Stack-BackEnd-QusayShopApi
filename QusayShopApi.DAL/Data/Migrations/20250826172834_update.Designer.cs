@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QusayShopApi.DAL.Data;
 
@@ -11,9 +12,11 @@ using QusayShopApi.DAL.Data;
 namespace QusayShopApi.DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250826172834_update")]
+    partial class update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,62 +200,6 @@ namespace QusayShopApi.DAL.Data.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("QusayShopApi.DAL.Models.Product.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BrandId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Create_at")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Discount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("MainImage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Rating")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Update_at")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BrandId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Products");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -266,31 +213,6 @@ namespace QusayShopApi.DAL.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("QusayShopApi.DAL.Models.Product.Product", b =>
-                {
-                    b.HasOne("QusayShopApi.DAL.Models.Brand.Brand", "Brand")
-                        .WithMany("Products")
-                        .HasForeignKey("BrandId");
-
-                    b.HasOne("QusayShopApi.DAL.Models.Category.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId");
-
-                    b.Navigation("Brand");
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("QusayShopApi.DAL.Models.Brand.Brand", b =>
-                {
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("QusayShopApi.DAL.Models.Category.Category", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QusayShopApi.DAL.DTO.Responses
+namespace QusayShopApi.DAL.DTO.Requests
 {
-    public class UserDTOResponse
+    public class ForgetPasswordDTORequest
     {
-        public String Token { get; set; }
+        public string Email { get; set; }
     }
 }

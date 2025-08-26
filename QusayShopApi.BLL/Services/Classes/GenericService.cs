@@ -35,9 +35,12 @@ namespace QusayShopApi.BLL.Services.Classes
             return _genericRepository.Remove(entity);
         }
 
-        public IEnumerable<TResponse> GetAll()
+        public IEnumerable<TResponse> GetAll(bool brands_InActive =false )
         {
             var entities = _genericRepository.GetAll();
+            if (!brands_InActive) { 
+                entities=_genericRepository.GetAll().Where(b=>b.Status == Status.Active);
+            }
             return entities.Adapt<IEnumerable<TResponse>>();
         }
 
@@ -51,7 +54,7 @@ namespace QusayShopApi.BLL.Services.Classes
         {
             var entity = _genericRepository.GetById(id);
             if (entity is null) return false;
-            entity.status = entity.status == Status.Active ? Status.In_Active : Status.Active;
+            entity.Status = entity.Status == Status.Active ? Status.In_Active : Status.Active;
             _genericRepository.Update(entity);
             return true;
         }
