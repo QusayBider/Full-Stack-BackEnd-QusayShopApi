@@ -6,6 +6,7 @@ using QusayShopApi.DAL.DTO.Responses;
 using QusayShopApi.DAL.Models;
 using QusayShopApi.DAL.Models.Brand;
 using QusayShopApi.DAL.Models.Category;
+using QusayShopApi.DAL.Models.Product;
 using QusayShopApi.DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,27 @@ namespace QusayShopApi.BLL.Services.Classes
 {
     public class BrandServices : GenericService<BrandDTORequest, BrandDTOResponses, Brand>, IBrandServices
     {
-        public BrandServices(IBrandRepository Repository) : base(Repository)
+        private readonly IBrandRepository _repository;
+        private readonly IFileService _fileService;
+
+        public BrandServices(IBrandRepository Repository,IFileService fileService) : base(Repository)
         {
+            _repository = Repository;
+            _fileService = fileService;
         }
+            public async Task<int> CreateFile(BrandDTORequest request)
+            {
+                var entity = request.Adapt<Brand>();
+                entity.Create_at = DateTime.UtcNow;
+                if (request.MainImage != null)
+                {
+
+                    var imagePath = await _fileService.UploadFileAsync(request.MainImage);
+                    entity.MainImage = imagePath;
+                }
+                return _repository.Update(entity);
+
+            }
+    
     }
 }

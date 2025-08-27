@@ -44,10 +44,14 @@ namespace QusayShopApi.BLL.Services.Classes
             return entities.Adapt<IEnumerable<TResponse>>();
         }
 
-        public TResponse GetById(int id)
+        public TResponse GetById(int id, bool brands_InActive = false)
         {
             var entity = _genericRepository.GetById(id);
-            return entity is null ? default : entity.Adapt<TResponse>();
+            if (!brands_InActive)
+            {
+                return entity is null || entity.Status == Status.In_Active ? default : entity.Adapt<TResponse>();
+            }
+                return entity is null ? default : entity.Adapt<TResponse>();
         }
 
         public bool ToggleStatus(int id)

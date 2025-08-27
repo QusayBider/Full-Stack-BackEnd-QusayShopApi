@@ -5,10 +5,12 @@ using QusayShopApi.BLL.Services;
 using QusayShopApi.BLL.Services.Interfaces;
 using QusayShopApi.DAL.DTO.Requests;
 
-namespace QusayShopApi.PL.Controllers
+namespace QusayShopApi.PL.Areas.Customer
 {
-    [Route("api/[controller]")]
+    [Route("api/[area]/[controller]")]
     [ApiController]
+    [Area("Customer")]
+    [Authorize(Roles = "Customer")]
     public class BrandsController : ControllerBase
     {
         private readonly IBrandServices _brandService;

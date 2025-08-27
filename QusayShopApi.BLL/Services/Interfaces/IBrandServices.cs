@@ -12,6 +12,6 @@ namespace QusayShopApi.BLL.Services.Interfaces
 {
     public interface IBrandServices : IGenericService<BrandDTORequest, BrandDTOResponses, Brand>
     {
-
+        public Task<int> CreateFile(BrandDTORequest request);
     }
 }

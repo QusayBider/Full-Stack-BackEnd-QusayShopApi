@@ -15,6 +15,6 @@ namespace QusayShopApi.BLL.Services.Interfaces
         int Delete(int id);
         int Update(int id, TRequest request);
         bool ToggleStatus(int id);
-        TResponse GetById(int id);
+        TResponse GetById(int id, bool brands_Active = false);
     }
 }

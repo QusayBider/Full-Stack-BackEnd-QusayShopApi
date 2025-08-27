@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using QusayShopApi.BLL.Services.Classes;
 using QusayShopApi.BLL.Services.Interfaces;
 using QusayShopApi.DAL.DTO.Requests;
 
@@ -34,10 +35,10 @@ namespace QusayShopApi.PL.Areas.Admin.Controllers
             return Ok(_brand);
         }
         [HttpPost("")]
-        public IActionResult CreateBrand([FromBody] BrandDTORequest request)
+        public async Task<IActionResult> Create([FromForm] BrandDTORequest request)
         {
-            var id = _brandService.Create(request);
-            return CreatedAtAction(nameof(GetBrandById), new { id }, new { message = request });
+            var result = await _brandService.CreateFile(request);
+            return Ok(result);
         }
         [HttpPatch("{id}")]
         public IActionResult UpdateBrand([FromRoute] int id, [FromBody] BrandDTORequest request)
