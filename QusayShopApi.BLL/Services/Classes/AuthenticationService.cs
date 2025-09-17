@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Azure.Core;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -21,14 +25,17 @@ namespace QusayShopApi.BLL.Services.Classes
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailSender;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AuthenticationService(UserManager<ApplicationUser> userManager,IConfiguration configuration,IEmailSender emailSender ) {
+        public AuthenticationService(Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager, IConfiguration configuration, IEmailSender emailSender, SignInManager<ApplicationUser> signInManager)
+        {
             _userManager = userManager;
             _configuration = configuration;
             _emailSender = emailSender;
+            _signInManager = signInManager;
         }
 
         public async Task<UserDTOResponse> LoginAsync(LoginDTORequest loginDTORequest)
@@ -38,20 +45,24 @@ namespace QusayShopApi.BLL.Services.Classes
             {
                 throw new Exception("Invalid email or password");
             }
-            var isValidPassword =await _userManager.CheckPasswordAsync(user,loginDTORequest.Password);
 
-            if (!isValidPassword)
+            var result = await _signInManager.CheckPasswordSignInAsync(user,loginDTORequest.Password,true);
+            if (result.Succeeded)
             {
+                return new UserDTOResponse
+                {
+                    Token = await GeneretateJWT(user)
+                };
+
+            } else if (result.IsLockedOut) { 
+                throw new Exception("Your account is locked. Please try again later.");
+            }
+            else if (result.IsNotAllowed) {
+                throw new Exception("You need to confirm your email before logging in.");
+            }
+            else {
                 throw new Exception("Invalid email or password");
             }
-            if (!user.EmailConfirmed) {
-                throw new Exception("Please confirm your email");
-            }
-            return new UserDTOResponse
-            {
-                Token = await GeneretateJWT(user)
-            };
-
         }
 
         private async Task<string> GeneretateJWT(ApplicationUser user) {
@@ -80,7 +91,7 @@ namespace QusayShopApi.BLL.Services.Classes
 
         }
 
-        public async Task<UserDTOResponse> RegisterAsync(RegisterDTORequest registerDTORequest)
+        public async Task<UserDTOResponse> RegisterAsync(RegisterDTORequest registerDTORequest,HttpRequest Request)
         {
             var user = new ApplicationUser { 
                 
@@ -93,9 +104,10 @@ namespace QusayShopApi.BLL.Services.Classes
            var Result= await _userManager.CreateAsync(user, registerDTORequest.Password);
             if (Result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, "Customer");
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var escapeToken = Uri.EscapeDataString(token);
-                var emailUrl = $"https://localhost:7017/api/Identity/Account/confirmEmail?token={escapeToken}&userId={user.Id}";
+                var emailUrl = $"{Request.Scheme}://{Request.Host}/api/Identity/Account/confirmEmail?token={escapeToken}&userId={user.Id}";
                 await _emailSender.SendEmailAsync(user.Email,"Welcome",$"<h1>Hello {user.UserName}</h1>"+$"<a href='{emailUrl}'>confirm</a>");
                 return new UserDTOResponse()
                 {
@@ -119,7 +131,7 @@ namespace QusayShopApi.BLL.Services.Classes
             }
             return "Email confirmation failed";
         }
-
+         
         public async Task<string> ForgetPassword(ForgetPasswordDTORequest request) {
 
             var user = await _userManager.FindByEmailAsync(request.Email);

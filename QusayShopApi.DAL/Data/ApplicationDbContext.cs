@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 using QusayShopApi.DAL.Models.Category;
 using QusayShopApi.DAL.Models.Product;
 using QusayShopApi.DAL.Models.Brand;
+using QusayShopApi.DAL.Models.Cart;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using QusayShopApi.DAL.Models.Order;
 
 namespace QusayShopApi.DAL.Data
 {
@@ -19,6 +21,10 @@ namespace QusayShopApi.DAL.Data
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderItem> OrderItem { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 

@@ -9,11 +9,11 @@ using QusayShopApi.DAL.Data;
 
 #nullable disable
 
-namespace QusayShopApi.DAL.Data.Migrations
+namespace QusayShopApi.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250827173309_brandImage")]
-    partial class brandImage
+    [Migration("20250829074556_editbrand")]
+    partial class editbrand
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,7 +160,6 @@ namespace QusayShopApi.DAL.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MainImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -176,6 +175,24 @@ namespace QusayShopApi.DAL.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("QusayShopApi.DAL.Models.Cart.Cart", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("QusayShopApi.DAL.Models.Category.Category", b =>
@@ -273,6 +290,25 @@ namespace QusayShopApi.DAL.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("QusayShopApi.DAL.Models.Cart.Cart", b =>
+                {
+                    b.HasOne("QusayShopApi.DAL.Models.Product.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QusayShopApi.DAL.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("QusayShopApi.DAL.Models.Product.Product", b =>

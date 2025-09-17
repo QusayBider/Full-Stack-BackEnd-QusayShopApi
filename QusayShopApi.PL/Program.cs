@@ -12,6 +12,7 @@ using QusayShopApi.DAL.Repositories.Interfaces;
 using QusayShopApi.DAL.Utils;
 using Scalar;
 using Scalar.AspNetCore;
+using Stripe;
 using System.Text;
 using System.Threading.Tasks;
 namespace QusayShopApi.PL
@@ -34,8 +35,14 @@ namespace QusayShopApi.PL
             builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
             builder.Services.AddScoped<IBrandRepository, BrandRepository>();
             builder.Services.AddScoped<IProductRepository,ProductRepository>();
-            builder.Services.AddScoped<IFileService, FileService>();
-            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<ICartRepository, CartRepository>();
+            builder.Services.AddScoped<IFileService, BLL.Services.Classes.FileService>();
+            builder.Services.AddScoped<IProductService, BLL.Services.Classes.ProductService>();
+            builder.Services.AddScoped<ICartService, CartService>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            builder.Services.AddScoped<ICheckOutService, CheckOutService>();
+            builder.Services.AddScoped<ICheckOutRepository, CheckOutRepository>();
             builder.Services.AddScoped<ICategoryServices,CategoryServices>();
             builder.Services.AddScoped<IBrandServices, BrandServices>();
             builder.Services.AddScoped<ISeedData, SeedData>();
@@ -45,7 +52,12 @@ namespace QusayShopApi.PL
 
 
 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+
+            }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
             builder.Services.AddAuthentication(options =>
             {
@@ -65,7 +77,8 @@ namespace QusayShopApi.PL
             };
         });
 
-
+            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 
             var app = builder.Build();

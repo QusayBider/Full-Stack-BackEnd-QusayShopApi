@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QusayShopApi.BLL.Services.Interfaces;
 using QusayShopApi.DAL.DTO.Requests;
@@ -21,7 +22,7 @@ namespace QusayShopApi.PL.Areas.Identity.Controllers
         public async Task<ActionResult< UserDTOResponse>> Register([FromBody] RegisterDTORequest registerDTORequest)
         {
             //ActionResult< UserDTOResponse> it use to force to return a spicfic data in the body of the request
-            var result = await _authenticationService.RegisterAsync(registerDTORequest);
+            var result = await _authenticationService.RegisterAsync(registerDTORequest,Request);
             return Ok(result);
         }
         [HttpPost("Login")]
