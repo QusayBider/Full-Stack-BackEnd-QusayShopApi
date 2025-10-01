@@ -17,9 +17,9 @@ namespace QusayShopApi.DAL.Repositories.Classes
         {
             _context = context;
         }
-        public async Task AddOrderItemsAsync(OrderItem orderItems)
+        public async Task AddOrderItemsAsync(List<OrderItem> orderItems)
         {
-            await _context.AddAsync(orderItems);
+            await _context.AddRangeAsync(orderItems);
             await _context.SaveChangesAsync();
         }
     }

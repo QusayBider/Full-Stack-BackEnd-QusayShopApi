@@ -35,6 +35,7 @@ namespace QusayShopApi.PL
             builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
             builder.Services.AddScoped<IBrandRepository, BrandRepository>();
             builder.Services.AddScoped<IProductRepository,ProductRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<ICartRepository, CartRepository>();
             builder.Services.AddScoped<IFileService, BLL.Services.Classes.FileService>();
             builder.Services.AddScoped<IProductService, BLL.Services.Classes.ProductService>();
@@ -42,6 +43,7 @@ namespace QusayShopApi.PL
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             builder.Services.AddScoped<ICheckOutService, CheckOutService>();
+            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ICheckOutRepository, CheckOutRepository>();
             builder.Services.AddScoped<ICategoryServices,CategoryServices>();
             builder.Services.AddScoped<IBrandServices, BrandServices>();
@@ -58,6 +60,16 @@ namespace QusayShopApi.PL
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
 
             }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+            var userPolicy = "";
+            builder.Services.AddCors(option =>
+            {
+                option.AddPolicy(name :userPolicy,policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
+
 
             builder.Services.AddAuthentication(options =>
             {
@@ -96,7 +108,8 @@ namespace QusayShopApi.PL
             await ObjectOfseedData.IdentityRoleSeedingAsync();
 
             app.UseHttpsRedirection();
-
+            app.UseAuthorization();
+            app.UseCors(userPolicy);
             app.UseAuthorization();
             app.UseStaticFiles();
 

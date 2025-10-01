@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QusayShopApi.DAL.DTO.Responses
 {
-    public class UserDTOResponse
+    public class UsersDTOResponses
     {
         public String Token { get; set; }
     }

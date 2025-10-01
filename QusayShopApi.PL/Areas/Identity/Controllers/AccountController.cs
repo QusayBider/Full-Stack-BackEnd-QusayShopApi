@@ -19,14 +19,14 @@ namespace QusayShopApi.PL.Areas.Identity.Controllers
             _authenticationService = authenticationService;
         } 
         [HttpPost("Register")]
-        public async Task<ActionResult< UserDTOResponse>> Register([FromBody] RegisterDTORequest registerDTORequest)
+        public async Task<ActionResult< UsersDTOResponses>> Register([FromBody] RegisterDTORequest registerDTORequest)
         {
             //ActionResult< UserDTOResponse> it use to force to return a spicfic data in the body of the request
             var result = await _authenticationService.RegisterAsync(registerDTORequest,Request);
             return Ok(result);
         }
         [HttpPost("Login")]
-        public async Task<ActionResult<UserDTOResponse>> Login([FromBody] LoginDTORequest loginDTORequest)
+        public async Task<ActionResult<UsersDTOResponses>> Login([FromBody] LoginDTORequest loginDTORequest)
         {
             var result = await _authenticationService.LoginAsync(loginDTORequest);
             return Ok(result);

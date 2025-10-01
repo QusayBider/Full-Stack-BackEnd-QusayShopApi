@@ -11,8 +11,8 @@ namespace QusayShopApi.BLL.Services.Interfaces
 {
     public interface IAuthenticationService
     {
-        public Task<UserDTOResponse> LoginAsync(LoginDTORequest loginDTORequest);
-        public Task<UserDTOResponse> RegisterAsync(RegisterDTORequest registerDTORequest, HttpRequest Request);
+        public Task<UsersDTOResponses> LoginAsync(LoginDTORequest loginDTORequest);
+        public Task<UsersDTOResponses> RegisterAsync(RegisterDTORequest registerDTORequest, HttpRequest Request);
         public  Task<string> ConfirmEmail(string token, string userId);
         public  Task<string> ForgetPassword(ForgetPasswordDTORequest request);
         public  Task<string> ResetPassword(ResetPasswordDTORequest request);

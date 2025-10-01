@@ -9,6 +9,6 @@ namespace QusayShopApi.DAL.Repositories.Interfaces
 {
     public interface IOrderItemRepository
     {
-        Task AddOrderItemsAsync(OrderItem orderItems);
+        Task AddOrderItemsAsync(List<OrderItem> orderItems);
     }
 }

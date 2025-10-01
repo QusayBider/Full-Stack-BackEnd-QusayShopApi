@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using QusayShopApi.DAL.Data;
 using QusayShopApi.DAL.Models.Cart;
 using QusayShopApi.DAL.Repositories.Interfaces;
@@ -27,6 +28,37 @@ namespace QusayShopApi.DAL.Repositories.Classes
         public async Task<List<Cart>> getCartItems(string userId)
         {
             return _context.Carts.Include(c=>c.Product).Where(c => c.UserId == userId).ToList();
+        }
+        public async Task<String> DeleteCart(string userId) { 
+        
+            var items = _context.Carts.Where(c => c.UserId == userId).ToList();
+
+            if (items is null)
+            {
+                throw new Exception("No item in cart");
+            }
+            else {
+                _context.Carts.RemoveRange(items);
+                await _context.SaveChangesAsync();
+
+                return ("The Cart clear successfully");
+
+            }
+
+        }
+
+        public async Task<string> DeleteItemFromCart(string userId, int productId)
+        {
+            var item = _context.Carts.Where(c => c.UserId == userId && c.ProductId == productId);
+
+            if (item is null) {
+                throw new Exception("item not in cart");
+            }
+            else {
+                _context.Carts.RemoveRange(item);
+                await _context.SaveChangesAsync();
+                 return ("item delete successfully");      
+            }
         }
     }
 }

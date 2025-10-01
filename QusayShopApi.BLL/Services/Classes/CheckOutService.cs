@@ -81,17 +81,22 @@ namespace QusayShopApi.BLL.Services.Classes
             if (order.PaymentMethod == DAL.Models.Order.PaymentMethod.Visa) {
                 order.Status = OrderStatus.Approved;
                 var carts = await _cartRepository.getCartItems(order.UserId);
+                var OrderItems = new List<OrderItem>();
                 foreach (var item in carts)
                 {
-                    await _orderItemRepository.AddOrderItemsAsync(new OrderItem
+                    var orderItem = new OrderItem
                     {
                         OrderId = order.Id,
                         ProductId = item.ProductId,
                         Quantity = item.Quantity,
-                        TotalPrice = item.Product.Price* item.Quantity
-                    });
+                        TotalPrice = item.Product.Price* item.Product.Quantity
+                    };
 
+                    OrderItems.Add(orderItem);
                 }
+                await _orderItemRepository.AddOrderItemsAsync(OrderItems);
+                await _cartRepository.DeleteCart(order.UserId);
+
                 subject = "Visa Payment Successful";
                 body = body.Replace("{customer_name}", order.User.FullName)
                            .Replace("{transaction_id}", order.PaymentId ?? "N/A")

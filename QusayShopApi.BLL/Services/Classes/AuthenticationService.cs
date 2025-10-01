@@ -38,7 +38,7 @@ namespace QusayShopApi.BLL.Services.Classes
             _signInManager = signInManager;
         }
 
-        public async Task<UserDTOResponse> LoginAsync(LoginDTORequest loginDTORequest)
+        public async Task<UsersDTOResponses> LoginAsync(LoginDTORequest loginDTORequest)
         {
             var user = await _userManager.FindByEmailAsync(loginDTORequest.Email);
             if (user is  null)
@@ -49,7 +49,7 @@ namespace QusayShopApi.BLL.Services.Classes
             var result = await _signInManager.CheckPasswordSignInAsync(user,loginDTORequest.Password,true);
             if (result.Succeeded)
             {
-                return new UserDTOResponse
+                return new UsersDTOResponses
                 {
                     Token = await GeneretateJWT(user)
                 };
@@ -91,7 +91,7 @@ namespace QusayShopApi.BLL.Services.Classes
 
         }
 
-        public async Task<UserDTOResponse> RegisterAsync(RegisterDTORequest registerDTORequest,HttpRequest Request)
+        public async Task<UsersDTOResponses> RegisterAsync(RegisterDTORequest registerDTORequest,HttpRequest Request)
         {
             var user = new ApplicationUser { 
                 
@@ -109,7 +109,7 @@ namespace QusayShopApi.BLL.Services.Classes
                 var escapeToken = Uri.EscapeDataString(token);
                 var emailUrl = $"{Request.Scheme}://{Request.Host}/api/Identity/Account/confirmEmail?token={escapeToken}&userId={user.Id}";
                 await _emailSender.SendEmailAsync(user.Email,"Welcome",$"<h1>Hello {user.UserName}</h1>"+$"<a href='{emailUrl}'>confirm</a>");
-                return new UserDTOResponse()
+                return new UsersDTOResponses()
                 {
                     Token = registerDTORequest.Email
                 };
