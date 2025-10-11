@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using QusayShopApi.DAL.Models;
+using QusayShopApi.DAL.Models.Order;
 using QusayShopApi.DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -39,8 +40,8 @@ namespace QusayShopApi.DAL.Repositories.Classes
             return "Failed to Block User";
         }
 
-        public async Task<string> UnBlockUserAsymc(string iduserId) { 
-            var user = await _userManger.FindByIdAsync(iduserId);
+        public async Task<string> UnBlockUserAsync(string userId) { 
+            var user = await _userManger.FindByIdAsync(userId);
             if (user == null)
                 return "User Not Found";
             user.LockoutEnd = null;
@@ -57,6 +58,22 @@ namespace QusayShopApi.DAL.Repositories.Classes
             if (user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.UtcNow)
                 return "User is Blocked";
             return "User is Not Blocked";
+
+        }
+
+        public async Task<string> ChangeUserRole(string userId,string roleName)
+        {
+            var user = await _userManger.FindByIdAsync(userId);
+            if (user == null)
+                return "User Not Found";
+            var currentRoles = await _userManger.GetRolesAsync(user);
+            var removeResult = await _userManger.RemoveFromRolesAsync(user, currentRoles);
+            if (!removeResult.Succeeded)
+                return "Failed to Remove User Roles";
+            var addResult = await _userManger.AddToRoleAsync(user, roleName);
+            if (addResult.Succeeded)
+                return "User Role Changed Successfully";
+            return "Failed to Change User Role";
 
         }
     }

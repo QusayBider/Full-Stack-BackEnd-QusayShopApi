@@ -20,17 +20,37 @@ namespace QusayShopApi.PL.Areas.Admin.Controllers
         {
             _productService = productService;
         }
-        [HttpPost("")]
+        [HttpPost("AddProduct")]
         public async Task<IActionResult> Create([FromForm] ProductDTORequest request)
         {
-            var result= await _productService.CreateFile(request);
+            var result= await _productService.AddProduct(request);
             return Ok(result);
         }
-        [HttpGet("")]
-        public IActionResult GetAllProducts()
+        [HttpGet("GetAllProducts")]
+        public IActionResult GetAllProducts([FromQuery] int PageSize=0, [FromQuery] int NumberOfPage=0)
         {
-            var products = _productService.GetAll(true);
+            var products = _productService.GetAllProductsWithImages(Request, NumberOfPage, PageSize, false);
             return Ok(products);
         }
+        [HttpGet("GetProductById/{id}")]
+        public async Task<IActionResult> GetProductById(int id)
+        {
+            var product = await _productService.GetProductById(id);
+            return Ok(product);
+        }
+        [HttpPatch("ToggleStatus/{id}")]
+        public IActionResult ToggleStatus([FromRoute] int id)
+        {
+            var result = _productService.ToggleStatus(id);
+            if (!result) return NotFound();
+            return Ok("Statu Changed");
+        }
+        [HttpDelete("{ProductId}")]
+        public Task<string> DeleteProduct([FromRoute] int ProductId)
+        {
+            return _productService.DeleteProduct(ProductId);
+        }
+
+
     }
 }

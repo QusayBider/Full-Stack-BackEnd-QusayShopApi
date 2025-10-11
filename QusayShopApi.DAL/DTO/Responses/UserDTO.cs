@@ -17,6 +17,6 @@ namespace QusayShopApi.DAL.DTO.Responses
             public DateTime Create_at { get; set; } = DateTime.Now;
 
             public bool emailConfirmed { get; set; }
-        
+            public string UserRole { get; set; }
     }
 }

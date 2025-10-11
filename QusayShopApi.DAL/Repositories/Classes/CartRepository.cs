@@ -60,5 +60,55 @@ namespace QusayShopApi.DAL.Repositories.Classes
                  return ("item delete successfully");      
             }
         }
+
+        public async Task<string> IncreaseCartItemQuantity(string userId, int productId, int quantity)
+        {
+            var item = _context.Carts.FirstOrDefault(c => c.UserId == userId && c.ProductId == productId);
+            if (item is null)
+            {
+                throw new Exception("item not in cart");
+            }
+            else
+            {
+                item.Quantity = item.Quantity + quantity;
+                _context.Carts.Update(item);
+               var result= await _context.SaveChangesAsync();
+                if (result < 0) { 
+                return ("Quantity not increase");
+                }
+                else
+                {
+                    return ("Quantity increase successfully");
+                }
+                
+            }
+        }
+
+        public async Task<string> DecreaseCartItemQuantity(string userId, int productId, int quantity)
+        {
+            var item = _context.Carts.FirstOrDefault(c => c.UserId == userId && c.ProductId == productId);
+            if (item is null)
+            {
+                throw new Exception("item not in cart");
+            }
+            else
+            {
+                if(item.Quantity - quantity < 1)
+                {
+                    throw new Exception("Quantity cannot be less than 1");
+                }
+                item.Quantity = item.Quantity - quantity;
+                _context.Carts.Update(item);
+                var result = await _context.SaveChangesAsync();
+                if (result < 0)
+                {
+                    return ("Quantity not decrease ");
+                }
+                else
+                {
+                    return ("Quantity decrease successfully");
+                }
+            }
+        }
     }
 }

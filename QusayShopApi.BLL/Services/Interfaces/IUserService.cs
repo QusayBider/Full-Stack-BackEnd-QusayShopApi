@@ -13,7 +13,8 @@ namespace QusayShopApi.BLL.Services.Interfaces
         Task<List<UserDTO>> GettAllUserAsync();
         Task<UserDTO> GetUserByIdAsync(string id);
         Task<string> BlockUserAsync(string id, int days);
-        Task<string> UnBlockUserAsymc(string iduserId);
+        Task<string> UnBlockUserAsync(string userId);
         Task<string> IsBlockedUserAsync(string userId);
+        Task<string> ChangeUserRole(string userId, userDTOChangeRole Role);
     }
 }

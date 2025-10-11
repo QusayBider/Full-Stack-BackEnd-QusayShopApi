@@ -9,5 +9,8 @@ namespace QusayShopApi.DAL.Repositories.Interfaces
 {
     public interface IProductRepository : IGenericRepository<Product>
     {
+        List<Product> GetAllProductsWithImages();
+        Task<Product?> GetProductById(int productId);
     }
+    
 }

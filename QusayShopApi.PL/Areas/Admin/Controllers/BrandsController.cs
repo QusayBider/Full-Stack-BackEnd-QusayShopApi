@@ -19,13 +19,13 @@ namespace QusayShopApi.PL.Areas.Admin.Controllers
         {
             this._brandService = _brandService;
         }
-        [HttpGet("")]
+        [HttpGet("GetAllBrands")]
         public IActionResult GetAllBrands()
         {
             var categories = _brandService.GetAll(true);
             return Ok(categories);
         }
-        [HttpGet("{id}")]
+        [HttpGet("GetBrandById/{id}")]
 
         //[Authorize] its use to be use this action only of the user login else well be return error
         public IActionResult GetBrandById([FromRoute] int id)
@@ -34,13 +34,18 @@ namespace QusayShopApi.PL.Areas.Admin.Controllers
             if (_brand is null) return NotFound();
             return Ok(_brand);
         }
-        [HttpPost("")]
+        [HttpPost("AddBrand")]
         public async Task<IActionResult> Create([FromForm] BrandDTORequest request)
         {
-            var result = await _brandService.CreateFile(request);
-            return Ok(result);
+            var isExist = _brandService.checkedIfBrandHasExist(request.Name);
+            if (isExist) return Conflict("Brand Is Already Exist");
+            else
+            {
+                var result = await _brandService.CreateFile(request);
+                return Ok(result);
+            }
         }
-        [HttpPatch("{id}")]
+        [HttpPatch("UpdateBrand/{id}")]
         public IActionResult UpdateBrand([FromRoute] int id, [FromBody] BrandDTORequest request)
         {
             var result = _brandService.Update(id, request);

@@ -1,18 +1,19 @@
-﻿using QusayShopApi.DAL.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using QusayShopApi.DAL.Models;
+using QusayShopApi.DAL.Models.Brand;
+using QusayShopApi.DAL.Models.Cart;
+using QusayShopApi.DAL.Models.Category;
+using QusayShopApi.DAL.Models.Order;
+using QusayShopApi.DAL.Models.Product;
+using QusayShopApi.DAL.Models.Review;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using QusayShopApi.DAL.Models.Category;
-using QusayShopApi.DAL.Models.Product;
-using QusayShopApi.DAL.Models.Brand;
-using QusayShopApi.DAL.Models.Cart;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using QusayShopApi.DAL.Models.Order;
 
 namespace QusayShopApi.DAL.Data
 {
@@ -22,9 +23,10 @@ namespace QusayShopApi.DAL.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Cart> Carts { get; set; }
-
+        public DbSet<Review> Reviews { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderItem> OrderItem { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 

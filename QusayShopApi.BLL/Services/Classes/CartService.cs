@@ -15,34 +15,66 @@ namespace QusayShopApi.BLL.Services.Classes
     {
         private readonly ICartRepository _cartRepository;
 
-        public  CartService(ICartRepository cartRepository) {
+        public CartService(ICartRepository cartRepository)
+        {
             _cartRepository = cartRepository;
         }
-        public async Task<bool> addToCart(CartDTORequest request, string UserId)
+        public async Task<string> addToCart(CartDTORequest request, string UserId)
         {
-
-            var newItem = new Cart {
+            var CartItems = await _cartRepository.getCartItems(UserId);
+            foreach (var item in CartItems)
+            {
+                if (item.ProductId == request.ProductId)
+                {
+                    return "Item already in cart";
+                }
+            }
+            var newItem = new Cart
+            {
                 ProductId = request.ProductId,
                 Quantity = 1,
                 UserId = UserId
             };
 
-             
-            return await _cartRepository.addToCart(newItem) >0;
+
+            var returnValue = await _cartRepository.addToCart(newItem);
+            if (returnValue > 0)
+            {
+                return "Item added to cart successfully.";
+            }
+            else
+            {
+                return "Could not add item to cart.";
+            }
         }
 
         public async Task<CartSummaryDTOResponse> getCartSummary(string userId)
         {
             var cartItems = await _cartRepository.getCartItems(userId);
-            var response = new CartSummaryDTOResponse() { 
-            Items =  cartItems.Select(ci => new CartDTOResponse {
-                ProductId = ci.ProductId,
-                ProductName = ci.Product.Name,
-                Quantity = ci.Quantity,
-                Price = ci.Product.Price
-            }).ToList()
+            var response = new CartSummaryDTOResponse()
+            {
+                Items = cartItems.Select(ci => new CartDTOResponse
+                {
+                    ProductId = ci.ProductId,
+                    ProductName = ci.Product.Name,
+                    Quantity = ci.Quantity,
+                    Price = ci.Product.Price
+                }).ToList()
             };
-            return  response;
+            return response;
+        }
+
+        public async Task<string> RemoveProductFromCart(int ProductId, string UserId)
+        {
+            return await _cartRepository.DeleteItemFromCart(UserId, ProductId);
+        }
+        public async Task<string> IncreaseCartItemQuantity(string userId, int productId, int quantity)
+        {
+            return await _cartRepository.IncreaseCartItemQuantity(userId, productId, quantity);
+        }
+        public async Task<string> DecreaseCartItemQuantity(string userId, int productId, int quantity)
+        {
+            return await _cartRepository.DecreaseCartItemQuantity(userId, productId, quantity);
         }
     }
 }

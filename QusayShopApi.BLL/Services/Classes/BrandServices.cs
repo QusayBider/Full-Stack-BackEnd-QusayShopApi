@@ -26,7 +26,7 @@ namespace QusayShopApi.BLL.Services.Classes
             _repository = Repository;
             _fileService = fileService;
         }
-            public async Task<int> CreateFile(BrandDTORequest request)
+        public async Task<int> CreateFile(BrandDTORequest request)
             {
                 var entity = request.Adapt<Brand>();
                 entity.Create_at = DateTime.UtcNow;
@@ -39,6 +39,12 @@ namespace QusayShopApi.BLL.Services.Classes
                 return _repository.Update(entity);
 
             }
-    
+
+        public bool checkedIfBrandHasExist(string BrandName) { 
+            return _repository.checkedIfBrandHasExist(BrandName);
+
+        }
+
+
     }
 }

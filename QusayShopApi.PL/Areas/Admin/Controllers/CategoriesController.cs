@@ -24,39 +24,44 @@ namespace QusayShopApi.PL.Areas.Admin.Controllers
             var categories = _categoryService.GetAll(true);
             return Ok(categories);
         }
-        [HttpGet("{id}")]
+        [HttpGet("GetCategoryById/{id}")]
         public IActionResult GetCategoryById([FromRoute] int id)
         {
             var category = _categoryService.GetById(id,true);
             if (category is null) return NotFound();
             return Ok(category);
         }
-        [HttpPost("")]
-        public IActionResult CreateCategory([FromBody] CategoryDTORequest request)
+        [HttpPost("AddCategory")]
+        public Task<IActionResult> CreateCategory([FromBody] CategoryDTORequest request)
         {
-            var id = _categoryService.Create(request);
-            return CreatedAtAction(nameof(GetCategoryById), new { id }, new {message= request });
+            var checkName = _categoryService.checkedIfCategoryHasExist(request.Name);
+            if (checkName) return Task.FromResult<IActionResult>(BadRequest("Category Name Already Exist"));
+            var result = _categoryService.Create(request);
+            if (result == 0) return Task.FromResult<IActionResult>(BadRequest());
+            return Task.FromResult<IActionResult>(Ok(new {Message = request.Name }));
         }
-        [HttpPatch("{id}")]
+        [HttpPatch("UpdateCategory/{id}")]
         public IActionResult UpdateCategory([FromRoute] int id, [FromBody] CategoryDTORequest request)
         {
+            var checkName = _categoryService.checkedIfCategoryHasExist(request.Name);
+            if (checkName) return (BadRequest("Category Name Already Exist"));
             var result = _categoryService.Update(id, request);
             if (result == 0) return NotFound();
-            return Ok();
+            return Ok(new { message= "Category name change" });
         }
         [HttpPatch("ToggleStatus/{id}")]
         public IActionResult ToggleStatus([FromRoute] int id)
         {
             var result = _categoryService.ToggleStatus(id);
             if (!result) return NotFound();
-            return Ok();
+            return Ok("Statu Changed");
         }
         [HttpDelete("")]
         public IActionResult DeleteCategory([FromQuery] int id)
         {
             var result = _categoryService.Delete(id);
             if (result == 0) return NotFound();
-            return Ok();
+            return Ok("Category Deleted");
         }
     }
 }

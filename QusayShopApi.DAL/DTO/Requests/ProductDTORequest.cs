@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using QusayShopApi.DAL.Models.Category;
+using QusayShopApi.DAL.Models.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace QusayShopApi.DAL.DTO.Requests
         public int Quantity { get; set; }
         public decimal? Discount { get; set; }
         public IFormFile MainImage { get; set; }
+
+        public List<IFormFile> SubImages {get;set;}
         public int? CategoryId { get; set; }
         public int? BrandId { get; set; }
     }

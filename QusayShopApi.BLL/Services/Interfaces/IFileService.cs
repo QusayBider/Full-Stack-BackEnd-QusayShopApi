@@ -10,6 +10,7 @@ namespace QusayShopApi.BLL.Services.Interfaces
     public interface IFileService
     {
         Task <string> UploadFileAsync(IFormFile file);
-        Task DeleteFileAsync(string fileUrl);
+        Task<List<string>> UploadManyFileAsync(List<IFormFile> files);
+        void DeleteFileAsync(string fileName);
     }
 }

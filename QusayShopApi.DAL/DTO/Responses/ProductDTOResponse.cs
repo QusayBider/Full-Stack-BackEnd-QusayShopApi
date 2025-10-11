@@ -24,9 +24,11 @@ namespace QusayShopApi.DAL.DTO.Responses
         public DateTime Create_at { get; set; } = DateTime.Now;
         public DateTime Update_at { get; set; }
         public string Status { get; set; }
-        public string Image => $"https://localhost:7017/images/{MainImage}";
+        public string MainImageUrl { get; set; } 
+        public List<string> SubImagesUrl { get; set; }=new List<string>();
         public int CategoryId { get; set; }
         public int BrandId { get; set; }
+        public List<ReviewDTOResponse> Reviews { get; set; } = new List<ReviewDTOResponse>();
 
     }
 }

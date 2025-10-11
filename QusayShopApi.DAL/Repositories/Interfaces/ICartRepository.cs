@@ -13,6 +13,9 @@ namespace QusayShopApi.DAL.Repositories.Interfaces
          Task<List<Cart>> getCartItems(string userId);
          Task<String> DeleteCart(string userId);
         Task<String> DeleteItemFromCart(string userId,int productId);
+        Task<string> IncreaseCartItemQuantity(string userId, int productId, int quantity);
+
+        Task<string> DecreaseCartItemQuantity(string userId, int productId, int quantity);
 
     }
 }

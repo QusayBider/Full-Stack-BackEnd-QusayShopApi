@@ -23,6 +23,7 @@ namespace QusayShopApi.DAL.Repositories.Classes
         {
             context.Set<T>().Add(entity);
             return context.SaveChanges();
+            
         }
 
         public IEnumerable<T> GetAll(bool withTracking = false)

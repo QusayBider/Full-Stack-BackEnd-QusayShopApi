@@ -15,6 +15,7 @@ using Scalar.AspNetCore;
 using Stripe;
 using System.Text;
 using System.Threading.Tasks;
+using ReviewService = QusayShopApi.BLL.Services.Classes.ReviewService;
 namespace QusayShopApi.PL
 {
     public class Program
@@ -32,23 +33,33 @@ namespace QusayShopApi.PL
             builder.Services.AddOpenApi();
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefultConnection"))) ;
+
+            builder.Services.AddScoped<IFileService, BLL.Services.Classes.FileService>();
+            builder.Services.AddScoped<IProductService, BLL.Services.Classes.ProductService>();
+            builder.Services.AddScoped<ICartService, CartService>();
+            builder.Services.AddScoped<ICheckOutService, CheckOutService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<ICategoryServices, CategoryServices>();
+            builder.Services.AddScoped<IBrandServices, BrandServices>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddScoped<PdfReportService>();
+
+
+
             builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
             builder.Services.AddScoped<IBrandRepository, BrandRepository>();
             builder.Services.AddScoped<IProductRepository,ProductRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<ICartRepository, CartRepository>();
-            builder.Services.AddScoped<IFileService, BLL.Services.Classes.FileService>();
-            builder.Services.AddScoped<IProductService, BLL.Services.Classes.ProductService>();
-            builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
-            builder.Services.AddScoped<ICheckOutService, CheckOutService>();
-            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ICheckOutRepository, CheckOutRepository>();
-            builder.Services.AddScoped<ICategoryServices,CategoryServices>();
-            builder.Services.AddScoped<IBrandServices, BrandServices>();
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+            
+
             builder.Services.AddScoped<ISeedData, SeedData>();
-            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 

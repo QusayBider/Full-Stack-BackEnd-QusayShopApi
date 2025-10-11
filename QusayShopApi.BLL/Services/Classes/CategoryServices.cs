@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Azure.Core;
 using Mapster;
+using Microsoft.Identity.Client;
 using QusayShopApi.BLL.Services.Interfaces;
 using QusayShopApi.DAL.Data;
 using QusayShopApi.DAL.DTO.Requests;
@@ -18,8 +19,16 @@ namespace QusayShopApi.BLL.Services.Classes
 {
     public class CategoryServices : GenericService<CategoryDTORequest, CategoryDTOResponses, Category>, ICategoryServices
     {
-       
-        public CategoryServices(ICategoryRepository Repository) : base(Repository)   {
+        private readonly ICategoryRepository _categoryRepository;
+
+        public CategoryServices(ICategoryRepository Repository,ICategoryRepository categoryRepository) : base(Repository)  {
+            _categoryRepository = categoryRepository;
+        }
+
+        public bool checkedIfCategoryHasExist(string CategoryName)
+        {
+            var category = _categoryRepository.checkedIfCategoryHasExist(CategoryName);
+            return category;
         }
 
     }

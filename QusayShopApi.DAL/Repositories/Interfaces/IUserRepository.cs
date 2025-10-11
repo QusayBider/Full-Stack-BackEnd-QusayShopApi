@@ -1,4 +1,5 @@
 ﻿using QusayShopApi.DAL.Models;
+using QusayShopApi.DAL.Models.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,8 @@ namespace QusayShopApi.DAL.Repositories.Interfaces
         Task<List<ApplicationUser>> GetAllUserAsync();
         Task<ApplicationUser?> GetUserByIdAsync(string id);
         Task<string> BlockUserAsync(string id, int days);
-        Task<string> UnBlockUserAsymc(string iduserId);
+        Task<string> UnBlockUserAsync(string userId);
         Task<string> IsBlockedUserAsync(string userId);
+        Task<string> ChangeUserRole(string userId,string roleName);
     }
 }

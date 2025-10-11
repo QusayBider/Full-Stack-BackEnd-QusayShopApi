@@ -11,6 +11,8 @@ namespace QusayShopApi.BLL.Services.Interfaces
 {
     public interface ICategoryServices: IGenericService<CategoryDTORequest, CategoryDTOResponses,Category>
     {
- 
+        bool checkedIfCategoryHasExist(string CategoryName);
+       
     }
+    
 }

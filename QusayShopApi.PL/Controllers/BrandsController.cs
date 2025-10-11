@@ -21,11 +21,14 @@ namespace QusayShopApi.PL.Controllers
         public IActionResult GetAllBrands()
         {
             var Brands = _brandService.GetAll(false);
+            if (!Brands.Any())
+            {
+                return BadRequest("There are no activated brands.");
+            }
             return Ok(Brands);
         }
         [HttpGet("{id}")]
 
-        //[Authorize] its use to be use this action only of the user login else well be return error
         public IActionResult GetBrandById([FromRoute] int id)
         {
             var _brand = _brandService.GetById(id);

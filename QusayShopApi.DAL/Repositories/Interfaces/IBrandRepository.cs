@@ -9,5 +9,6 @@ namespace QusayShopApi.DAL.Repositories.Interfaces
 {
     public interface IBrandRepository: IGenericRepository<Brand>
     {
+        bool checkedIfBrandHasExist(string BrandName);
     }
 }

@@ -89,11 +89,12 @@ namespace QusayShopApi.BLL.Services.Classes
                         OrderId = order.Id,
                         ProductId = item.ProductId,
                         Quantity = item.Quantity,
-                        TotalPrice = item.Product.Price* item.Product.Quantity
+                        TotalPrice = item.Product.Price* carts.FirstOrDefault(ci => ci.ProductId == item.ProductId).Quantity
                     };
 
                     OrderItems.Add(orderItem);
                 }
+                order.Status = OrderStatus.Approved;
                 await _orderItemRepository.AddOrderItemsAsync(OrderItems);
                 await _cartRepository.DeleteCart(order.UserId);
 
@@ -109,6 +110,7 @@ namespace QusayShopApi.BLL.Services.Classes
             else if (order.PaymentMethod == DAL.Models.Order.PaymentMethod.Cash)
             {
                 order.Status = OrderStatus.Pending;
+                await _cartRepository.DeleteCart(order.UserId);
                 subject = "Order Placed Successfully";
                 body = body.Replace("{customer_name}", order.User.FullName)
                           .Replace("{transaction_id}", $"{order.Id}")
@@ -117,7 +119,7 @@ namespace QusayShopApi.BLL.Services.Classes
                           .Replace("{payment_date}", null)
                           .Replace("{company_name}", "QusayShop")
                           .Replace("{year}", DateTime.UtcNow.Year.ToString());
-                return true;
+
             }
 
             await _emailSender.SendEmailAsync(order.User.Email, subject, body);
@@ -129,6 +131,7 @@ namespace QusayShopApi.BLL.Services.Classes
             var cartItems = await _cartRepository.getCartItems(UserId);
             if (!cartItems.Any())
             {
+
                 return new CheckOutDTOResponse
                 {
                     Success = false,
@@ -147,6 +150,15 @@ namespace QusayShopApi.BLL.Services.Classes
             };
             await _orderRepository.AddOrderAsync(Order);
             if (request.PaymentMethod == DAL.Models.Order.PaymentMethod.Cash) {
+                var result = await HandelPaymentSuccessAsync(Order.Id);
+                if (!result)
+                {
+                    return new CheckOutDTOResponse
+                    {
+                        Success = false,
+                        Message = "Failed to process cash order"
+                    };
+                }
                 return new CheckOutDTOResponse
                 {
                     Success = true,
@@ -182,12 +194,12 @@ namespace QusayShopApi.BLL.Services.Classes
                             UnitAmount = (long)(item.Product.Price * 100),
                         },
                         Quantity = item.Quantity,
-                    });
-            }
+                });
+                   
+                }
             var service = new SessionService();
             var session = service.Create(options);
-
-               Order.PaymentId = session.Id;
+                Order.PaymentId = session.Id;
 
                 return  new CheckOutDTOResponse 
             {

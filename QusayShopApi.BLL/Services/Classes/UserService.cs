@@ -1,4 +1,6 @@
 ﻿using Mapster;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Client;
 using QusayShopApi.BLL.Services.Interfaces;
 using QusayShopApi.DAL.DTO.Responses;
@@ -15,10 +17,12 @@ namespace QusayShopApi.BLL.Services.Classes
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager;
 
-        public UserService(IUserRepository _userRepository)
+        public UserService(IUserRepository _userRepository, Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager)
         {
             this._userRepository = _userRepository;
+            _userManager = userManager;
         }
 
        
@@ -26,7 +30,21 @@ namespace QusayShopApi.BLL.Services.Classes
         public async Task<List<UserDTO>> GettAllUserAsync()
         {
             var users= await _userRepository.GetAllUserAsync();
-            return users.Adapt<List<UserDTO>>();
+            var UserDTOS = new List<UserDTO>();
+            foreach (var user in users) {
+                var roles = await _userManager.GetRolesAsync(user);
+                UserDTOS.Add( new UserDTO {
+                    Id= user.Id,
+                    FullName= user.FullName,
+                    Email= user.Email,
+                    PhoneNumber= user.PhoneNumber,
+                    UserName= user.UserName,
+                    emailConfirmed= user.EmailConfirmed,
+                    UserRole= roles.FirstOrDefault() ?? "No Role"
+
+                });
+            }
+            return UserDTOS;
         }
 
         public async Task<UserDTO> GetUserByIdAsync(string id)
@@ -43,9 +61,12 @@ namespace QusayShopApi.BLL.Services.Classes
             return _userRepository.IsBlockedUserAsync(userId);
         }
 
-        public Task<string> UnBlockUserAsymc(string iduserId)
+        public Task<string> UnBlockUserAsync(string userId)
         {
-            return _userRepository.UnBlockUserAsymc(iduserId);
+            return _userRepository.UnBlockUserAsync(userId);
+        }
+        public Task<string> ChangeUserRole(string userId, userDTOChangeRole Role) { 
+            return _userRepository.ChangeUserRole(userId, Role.NewRole);
         }
     }
 }

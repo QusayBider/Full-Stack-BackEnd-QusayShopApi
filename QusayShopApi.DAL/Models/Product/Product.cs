@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,5 +22,8 @@ namespace QusayShopApi.DAL.Models.Product
 
         public int? BrandId { get; set; }
         public Brand.Brand Brand { get; set; }
+        
+        public List<ProductImage> SubImages { get; set; } = new List<ProductImage>();
+        public List<QusayShopApi.DAL.Models.Review.Review> Reviews { get; set; } = new List<QusayShopApi.DAL.Models.Review.Review>();
     }
 }

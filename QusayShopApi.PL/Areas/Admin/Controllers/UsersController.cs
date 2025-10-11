@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QusayShopApi.BLL.Services.Interfaces;
+using QusayShopApi.DAL.DTO.Responses;
 
 namespace QusayShopApi.PL.Areas.Admin.Controllers
 {
     [Route("api/[area]/[controller]")]
     [ApiController]
     [Area("Admin")]
-    //[Authorize(Roles = "Admin,SuperAdmin")]
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -44,13 +45,19 @@ namespace QusayShopApi.PL.Areas.Admin.Controllers
         [HttpPatch("UnBlock/{userId}")]
         public async Task<IActionResult> UnBlockUser([FromRoute] string userId)
         {
-            var result = await _userService.UnBlockUserAsymc(userId);
+            var result = await _userService.UnBlockUserAsync(userId);
             return Ok(result);
         }
         [HttpGet("IsBlocked/{userId}")]
         public async Task<IActionResult> IsBlockedUser([FromRoute] string userId)
         {
             var result = await _userService.IsBlockedUserAsync(userId);
+            return Ok(result);
+        }
+        [HttpPatch("ChangeRole/{userId}")]
+        public async Task<IActionResult> ChangeUserRole([FromRoute] string userId, [FromBody] userDTOChangeRole Role )
+        {
+            var result = await _userService.ChangeUserRole(userId, Role);
             return Ok(result);
         }
     }
