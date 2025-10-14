@@ -1,4 +1,6 @@
-﻿using QusayShopApi.DAL.DTO.Requests;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Http;
+using QusayShopApi.DAL.DTO.Requests;
 using QusayShopApi.DAL.DTO.Responses;
 using QusayShopApi.DAL.Models.Brand;
 using QusayShopApi.DAL.Models.Category;
@@ -14,5 +16,7 @@ namespace QusayShopApi.BLL.Services.Interfaces
     {
          Task<int> CreateFile(BrandDTORequest request);
         bool checkedIfBrandHasExist(string BrandName);
+        Task<List<BrandDTOResponses>> GetAllProduct(HttpRequest request, bool Brand_InActive = false);
+        Task<BrandDTOResponses> GetBrandById(HttpRequest request, int id, bool Brand_InActive = false);
     }
 }

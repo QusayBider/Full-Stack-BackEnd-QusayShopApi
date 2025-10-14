@@ -12,8 +12,8 @@ using QusayShopApi.DAL.Data;
 namespace QusayShopApi.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250921171822_test")]
-    partial class test
+    [Migration("20251013061810_UploadFullCode")]
+    partial class UploadFullCode
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -341,6 +341,64 @@ namespace QusayShopApi.DAL.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("QusayShopApi.DAL.Models.Product.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("productId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("productId");
+
+                    b.ToTable("ProductImages");
+                });
+
+            modelBuilder.Entity("QusayShopApi.DAL.Models.Review.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Ordering")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReviewDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -389,7 +447,7 @@ namespace QusayShopApi.DAL.Migrations
             modelBuilder.Entity("QusayShopApi.DAL.Models.Order.OrderItem", b =>
                 {
                     b.HasOne("QusayShopApi.DAL.Models.Order.Order", "Order")
-                        .WithMany()
+                        .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -420,6 +478,36 @@ namespace QusayShopApi.DAL.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("QusayShopApi.DAL.Models.Product.ProductImage", b =>
+                {
+                    b.HasOne("QusayShopApi.DAL.Models.Product.Product", "product")
+                        .WithMany("SubImages")
+                        .HasForeignKey("productId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("product");
+                });
+
+            modelBuilder.Entity("QusayShopApi.DAL.Models.Review.Review", b =>
+                {
+                    b.HasOne("QusayShopApi.DAL.Models.Product.Product", "Product")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QusayShopApi.DAL.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("QusayShopApi.DAL.Models.Brand.Brand", b =>
                 {
                     b.Navigation("Products");
@@ -428,6 +516,18 @@ namespace QusayShopApi.DAL.Migrations
             modelBuilder.Entity("QusayShopApi.DAL.Models.Category.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("QusayShopApi.DAL.Models.Order.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("QusayShopApi.DAL.Models.Product.Product", b =>
+                {
+                    b.Navigation("Reviews");
+
+                    b.Navigation("SubImages");
                 });
 #pragma warning restore 612, 618
         }

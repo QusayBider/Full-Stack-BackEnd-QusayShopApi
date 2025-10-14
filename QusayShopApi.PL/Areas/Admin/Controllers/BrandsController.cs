@@ -20,17 +20,15 @@ namespace QusayShopApi.PL.Areas.Admin.Controllers
             this._brandService = _brandService;
         }
         [HttpGet("GetAllBrands")]
-        public IActionResult GetAllBrands()
+        public async Task<IActionResult> GetAllBrands()
         {
-            var categories = _brandService.GetAll(true);
-            return Ok(categories);
+            
+            return Ok(await _brandService.GetAllProduct(Request,true));
         }
         [HttpGet("GetBrandById/{id}")]
-
-        //[Authorize] its use to be use this action only of the user login else well be return error
-        public IActionResult GetBrandById([FromRoute] int id)
+        public async Task<IActionResult> GetBrandById([FromRoute] int id)
         {
-            var _brand = _brandService.GetById(id);
+            var _brand = await _brandService.GetBrandById(Request, id, true);
             if (_brand is null) return NotFound();
             return Ok(_brand);
         }
@@ -64,7 +62,7 @@ namespace QusayShopApi.PL.Areas.Admin.Controllers
         {
             var result = _brandService.Delete(id);
             if (result == 0) return NotFound();
-            return Ok();
+            return Ok("Operation completed successfully.");
         }
     }
 }

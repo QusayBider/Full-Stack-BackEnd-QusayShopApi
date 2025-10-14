@@ -14,7 +14,7 @@ namespace QusayShopApi.DAL.DTO.Responses
         [JsonIgnore]
         public string MainImage { get; set; }
 
-        public string Image => $"https://localhost:7017/images/{MainImage}";
+        public string Image { get; set; }
         public DateTime Create_at { get; set; } = DateTime.Now;
         public DateTime Update_at { get; set; }
         public string Status { get; set; } 

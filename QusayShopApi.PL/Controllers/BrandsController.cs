@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using QusayShopApi.BLL.Services;
 using QusayShopApi.BLL.Services.Interfaces;
 using QusayShopApi.DAL.DTO.Requests;
+using System.Threading.Tasks;
 
 namespace QusayShopApi.PL.Controllers
 {
@@ -18,20 +19,20 @@ namespace QusayShopApi.PL.Controllers
             this._brandService = _brandService;
         }
         [HttpGet("")]
-        public IActionResult GetAllBrands()
+        public async Task<IActionResult> GetAllBrands()
         {
-            var Brands = _brandService.GetAll(false);
+            var Brands = await _brandService.GetAllProduct(Request,false);
             if (!Brands.Any())
             {
                 return BadRequest("There are no activated brands.");
             }
             return Ok(Brands);
         }
-        [HttpGet("{id}")]
+        [HttpGet("GetBrandById/{id}")]
 
-        public IActionResult GetBrandById([FromRoute] int id)
+        public async Task<IActionResult> GetBrandById([FromRoute] int id)
         {
-            var _brand = _brandService.GetById(id);
+            var _brand =await  _brandService.GetBrandById(Request, id, false);
             if (_brand is null) return NotFound();
             return Ok(_brand);
         }

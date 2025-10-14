@@ -1,9 +1,9 @@
-﻿using QusayShopApi.DAL.Models.Product;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QusayShopApi.DAL.Models.Product; 
 
 namespace QusayShopApi.DAL.Models.Review
 {

@@ -489,7 +489,7 @@ namespace QusayShopApi.DAL.Migrations
             modelBuilder.Entity("QusayShopApi.DAL.Models.Review.Review", b =>
                 {
                     b.HasOne("QusayShopApi.DAL.Models.Product.Product", "Product")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -522,6 +522,8 @@ namespace QusayShopApi.DAL.Migrations
 
             modelBuilder.Entity("QusayShopApi.DAL.Models.Product.Product", b =>
                 {
+                    b.Navigation("Reviews");
+
                     b.Navigation("SubImages");
                 });
 #pragma warning restore 612, 618

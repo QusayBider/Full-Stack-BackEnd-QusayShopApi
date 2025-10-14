@@ -32,10 +32,11 @@ namespace QusayShopApi.PL.Areas.Admin.Controllers
             var products = _productService.GetAllProductsWithImages(Request, NumberOfPage, PageSize, false);
             return Ok(products);
         }
+
         [HttpGet("GetProductById/{id}")]
         public async Task<IActionResult> GetProductById(int id)
         {
-            var product = await _productService.GetProductById(id);
+            var product = await _productService.GetProductbyIdWithImages(Request,id,false);
             return Ok(product);
         }
         [HttpPatch("ToggleStatus/{id}")]

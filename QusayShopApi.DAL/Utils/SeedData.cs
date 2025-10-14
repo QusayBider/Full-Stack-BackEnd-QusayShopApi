@@ -59,33 +59,33 @@ namespace QusayShopApi.DAL.Utils
             if (!await _userManager.Users.AnyAsync()) {
                 var user1 = new ApplicationUser()
                 {
-                    Email = "QusayBider@gmail.com",
-                    UserName = "QBdier",
-                    FullName = "Qusay Bider",
+                    Email = "Admin@gmail.com",
+                    UserName = "ATest",
+                    FullName = "Admin Test",
                     PhoneNumber = "1234567890",
                     EmailConfirmed=true
                 };
                 var user2 = new ApplicationUser()
                 {
-                    Email = "AhmadBider@gmail.com",
-                    UserName = "AhBdier",
-                    FullName = "Ahmad Bider",
+                    Email = "TestBider@gmail.com",
+                    UserName = "TeBdier",
+                    FullName = "Test Bider",
                     PhoneNumber = "1234567890",
                     EmailConfirmed = true
 
                 };
                 var user3 = new ApplicationUser()
                 {
-                    Email = "AliBider@gmail.com",
-                    UserName = "ABdier",
-                    FullName = "Ali Bider",
+                    Email = "CustomerBider@gmail.com",
+                    UserName = "CTest",
+                    FullName = "Customer Test",
                     PhoneNumber = "1234567890",
                     EmailConfirmed = true
 
                 };
-                await _userManager.CreateAsync(user1, "Qusay@1234");
-                await _userManager.CreateAsync(user2, "Ahmad@1234");    
-                await _userManager.CreateAsync(user3, "Ali@1234");
+                await _userManager.CreateAsync(user1, "Admin@1234");
+                await _userManager.CreateAsync(user2, "Test@1234");    
+                await _userManager.CreateAsync(user3, "Customer@1234");
 
                 await _userManager.AddToRoleAsync(user1, "Admin");
                 await _userManager.AddToRoleAsync(user2, "SuperAdmin");

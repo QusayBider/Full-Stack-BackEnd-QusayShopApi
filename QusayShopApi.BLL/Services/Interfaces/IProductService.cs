@@ -18,5 +18,6 @@ namespace QusayShopApi.BLL.Services.Interfaces
         Task<ProductDTOResponse> GetProductById(int id);
         Task<string> DeleteProduct(int id);
         bool ToggleStatus(int id);
+        Task<ProductDTOResponse> GetProductbyIdWithImages(HttpRequest request, int Product_id, bool onlyActive = false);
     }
 }

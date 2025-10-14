@@ -111,6 +111,12 @@ namespace QusayShopApi.PL
             {
                 app.MapOpenApi();
                 app.MapScalarApiReference();
+                app.UseDeveloperExceptionPage();
+
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
             }
 
             var scope = app.Services.CreateScope();

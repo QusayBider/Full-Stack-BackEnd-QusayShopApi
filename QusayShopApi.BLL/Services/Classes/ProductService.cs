@@ -125,5 +125,43 @@ namespace QusayShopApi.BLL.Services.Classes
             
         
         }
+
+        public async Task<ProductDTOResponse> GetProductbyIdWithImages(HttpRequest request,int Product_id, bool onlyActive = false)
+        {
+
+            var Products = _repository.GetAllProductsWithImages();
+            if (onlyActive)
+            {
+                Products = Products.Where(p => p.Status == DAL.Models.Status.Active).ToList();
+            }
+            var product = Products.FirstOrDefault(p=>p.Id == Product_id);
+
+            return  new ProductDTOResponse
+            {
+
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Rating = product.Rating,
+                Quantity = product.Quantity,
+                Discount = (decimal)product.Discount,
+                Create_at = product.Create_at,
+                Update_at = product.Update_at,
+                Status = product.Status.ToString(),
+                CategoryId = (int)product.CategoryId,
+                MainImageUrl = $"{request.Scheme}://{request.Host}/Images/{product.MainImage}",
+                SubImagesUrl = product.SubImages.Select(img => $"{request.Scheme}://{request.Host}/Images/{img.ImageName}").ToList(),
+                Reviews = product.Reviews.Select(r => new ReviewDTOResponse
+                {
+                    Id = r.Id,
+                    Rating = r.Rate,
+                    Comment = r.Comments,
+                    ReviewDate = r.ReviewDate,
+                    User = r.User.FullName
+                }).ToList()
+            };
+        }
+
     }
 }

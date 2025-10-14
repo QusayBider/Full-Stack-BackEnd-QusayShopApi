@@ -1,4 +1,5 @@
-﻿using QusayShopApi.DAL.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using QusayShopApi.DAL.Data;
 using QusayShopApi.DAL.Models.Brand;
 using QusayShopApi.DAL.Repositories.Interfaces;
 using System;
@@ -26,6 +27,14 @@ namespace QusayShopApi.DAL.Repositories.Classes
                 return false;
             }
             return true;
+        }
+        public async Task<List<Brand>> GetAllBrands()
+        {
+            return await _context.Brands.ToListAsync();
+        }
+        public async Task<Brand> GetBrandByIdAsync(int id)
+        {
+            return await _context.Brands.FirstOrDefaultAsync(b => b.Id == id);
         }
     }
 }
