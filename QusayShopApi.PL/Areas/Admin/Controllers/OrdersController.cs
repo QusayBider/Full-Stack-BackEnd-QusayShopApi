@@ -10,7 +10,7 @@ namespace QusayShopApi.PL.Areas.Admin.Controllers
     [Route("api/[area]/[controller]")]
     [ApiController]
     [Area("Admin")]
-     [Authorize(Roles = "Admin,SuperAdmin")]
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;

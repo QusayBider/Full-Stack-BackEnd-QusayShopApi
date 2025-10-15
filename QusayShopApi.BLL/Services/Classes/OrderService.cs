@@ -67,5 +67,37 @@ namespace QusayShopApi.BLL.Services.Classes
 
 
         }
+
+        public async Task<OrderDTOResponses> GetOrderUserByIdAsync(string userId, int OrderId)
+        {
+            var order = await _orderRepository.GetOrderByIdAsync(OrderId);
+            if(order == null || order.UserId != userId)
+            {
+                return null;
+            }
+            return new OrderDTOResponses
+            {
+                Id = order.Id,
+                Status = order.Status,
+                OrderDate = order.OrderDate,
+                TotalAmount = order.TotalAmount,
+                ShippingDate = order.ShippingDate,
+                PaymentMethod = order.PaymentMethod,
+                PaymentId = order.PaymentId,
+                CarrierName = order.CarrierName,
+                TrackingNumber = order.TrackingNumber,
+                UserId = order.UserId,
+                UserName = order.User?.FullName ?? "Unknown",
+                UserEmail = order.User?.Email ?? "Unknown",
+                OrderItems = order.OrderItems.Select(oi => new OrderItemDTO
+                {
+                    ProductId = oi.ProductId,
+                    ProductName = oi.Product?.Name ?? "Unknown",
+                    ProductPrice = oi.Product?.Price ?? 0,
+                    Quantity = oi.Quantity,
+                    TotalPrice = oi.TotalPrice
+                }).ToList()
+            };
+        }
     }
 }

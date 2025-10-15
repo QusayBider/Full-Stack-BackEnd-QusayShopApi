@@ -14,5 +14,6 @@ namespace QusayShopApi.BLL.Services.Interfaces
         Task<List<Order>> GetOrdersByUserAsync(string userId);
         Task<string> ChangeStatusOfOrderAsync(int orderId, OrderStatus NewStatus);
         Task<OrderDTOResponses> GetOrderByIdAsync(int orderId);
+        Task<OrderDTOResponses> GetOrderUserByIdAsync(string userId, int OrderId);
     }
 }
